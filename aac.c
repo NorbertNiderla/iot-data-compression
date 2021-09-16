@@ -25,6 +25,18 @@ static unsigned total;
 static unsigned current_number_of_symbols;
 static unsigned scale;
 
+/*
+static void adaptive_arithmetic_set_bounds(unsigned number_of_symbols, unsigned* counts){
+	bounds = (unsigned*)realloc(bounds, (number_of_symbols+1)*sizeof(unsigned));
+	bounds[0] = 0;
+	for(unsigned i = 0; i < number_of_symbols; i++){
+		bounds[i + 1] = bounds[i] + counts[i];
+	}
+	current_number_of_symbols = number_of_symbols;
+	total = bounds[current_number_of_symbols];
+}
+*/
+
 void adaptive_arithmetic_set_number_of_symbols(unsigned number_of_symbols){
 	current_number_of_symbols = number_of_symbols;
 	bounds = (unsigned*)realloc(bounds, (number_of_symbols+1)*sizeof(unsigned));
@@ -47,7 +59,7 @@ unsigned adaptive_arithmetic_encode(unsigned* data, int size, unsigned char* out
 	total = bounds[current_number_of_symbols];
 
 	for(int i = 0; i < size; i++){
-		step = (code)ceil((float)(high - low + 1) / (float)total);
+		step = (code)ceilf((float)(high - low + 1) / (float)total);
 		high = low + (step * bounds[data[i] + 1]) - 1;
 		low = low + (step * bounds[data[i]]);
 #if ENABLE_DEBUG
@@ -131,8 +143,8 @@ void adaptive_arithmetic_decode(unsigned char* input, int bits, unsigned* data, 
 	total = bounds[current_number_of_symbols];
 
 	for(int i = 0; i < size; i++){
-		step = (code)ceil((float)(high - low + 1)/(float)total);
-		cum = (code)ceil((float)(value - low) / (float)step);
+		step = (code)ceilf((float)(high - low + 1)/(float)total);
+		cum = (code)ceilf((float)(value - low) / (float)step);
 		data[i] = arithmetic_decode_symbol(cum);
 
 		high = low + (step * bounds[data[i] + 1]) - 1;

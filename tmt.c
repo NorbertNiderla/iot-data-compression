@@ -1,4 +1,5 @@
 //by Norbert Niderla, 2021
+
 //TMT by Liang, 2010
 
 #include <stdlib.h>
@@ -29,12 +30,12 @@ static uint8_t symbol_counter[SYMBOL_COUNTER_RANGE] = {0};
 
 static float get_entropy(int* data, int size){
 	float entropy = 0;
-    float single_symbol_entropy = 1.0f/(float)size*log(1.0f/(float)size)/log(2.0f);
+    float single_symbol_entropy = 1.0f/(float)size*log2f(1.0f/(float)size);
     for(int i = 0; i < SYMBOL_COUNTER_RANGE; i++) symbol_counter[i] = 0;
 
     for(int i = 0; i < size; i++){
         if((data[i] < SYMBOL_COUNTER_RANGE) & (data[i] > -SYMBOL_COUNTER_RANGE)){
-            symbol_counter[(int)abs(data[i])]++;
+            symbol_counter[abs(data[i])]++;
         } else {
             entropy += single_symbol_entropy;
         }
@@ -42,13 +43,13 @@ static float get_entropy(int* data, int size){
 
     for(int i = 0; i < SYMBOL_COUNTER_RANGE; i++)
     	if(symbol_counter[i] != 0)
-    		entropy += (float)symbol_counter[i]/(float)size*log((float)symbol_counter[i]/(float)size)/log(2.0f);
+    		entropy += (float)symbol_counter[i]/(float)size*log2f((float)symbol_counter[i]/(float)size);
 
     return -entropy + 1;
 }
 
 static unsigned get_l_symbols(unsigned M, unsigned R){
-    return(floor(log((float)R)/log((float)M)));
+    return(floor(logf(R)/logf(M)));
 }
 
 static float get_gamma(int* data, int size, unsigned R, unsigned M, unsigned K, float H){
@@ -71,7 +72,7 @@ static float get_gamma(int* data, int size, unsigned R, unsigned M, unsigned K, 
 
     float l = (float)get_l_symbols(M, R);
     float s = H*l*N_nneg+H*(l+1)*N_neg+H*l*N_ovh+K*N_ori;
-    float gamma = 1.0f - s/(float)K/(float)N;
+    float gamma = 1 - s/(float)K/(float)N;
 
     return gamma;
 } 
@@ -79,7 +80,7 @@ static float get_gamma(int* data, int size, unsigned R, unsigned M, unsigned K, 
 static void get_encoding_parameters(int* data, int size, unsigned* R_value, unsigned* M_value, unsigned* system_value){
     float sd = 0;
 
-	for (int k = 0; k < size; k++) sd += ((float)(pow((double)data[k], 2)));
+	for (int k = 0; k < size; k++) sd += powf(data[k], 2);
 
     unsigned R, M;
     float k;
@@ -92,14 +93,14 @@ static void get_encoding_parameters(int* data, int size, unsigned* R_value, unsi
 #endif
     } else {
 
-        sd = (float)sqrt((sd / (float) size));
-        k = ceil(log((double)(3*sd))/log((double)M_MAX));
-        float L = (float)floor(pow((double)(3*sd), 1/k));
+        sd = sqrtf((sd / (float)size));
+        k = ceilf(logf(3*sd)/logf(M_MAX));
+        float L = floorf(powf((3*sd), 1.0f/k));
 
         float entropy = get_entropy(data, size);
 
-        float gamma_max_l = get_gamma(data, size, (unsigned)round((pow(L, k)-1)), L, DATA_BITWIDTH, entropy);
-        float gamma_max_l_1 = get_gamma(data, size, (unsigned)round((pow(L+1,k)-1)), L+1, DATA_BITWIDTH, entropy);
+        float gamma_max_l = get_gamma(data, size, (unsigned)roundf((powf(L, k)-1)), L, DATA_BITWIDTH, entropy);
+        float gamma_max_l_1 = get_gamma(data, size, (unsigned)roundf((powf(L+1,k)-1)), L+1, DATA_BITWIDTH, entropy);
 
         if(gamma_max_l > gamma_max_l_1){
             M = (unsigned)L;
@@ -107,7 +108,7 @@ static void get_encoding_parameters(int* data, int size, unsigned* R_value, unsi
             M = (unsigned)L+1;
         }
 
-        R = (unsigned)pow((double)M, k) - 1;
+        R = (unsigned)powf(M, k) - 1;
         
 #if PRINT_STATS
         printf("%3d %3d %2.1f %2.1f %2.1f\n", R, M, sd, k, entropy);
@@ -145,6 +146,7 @@ static unsigned plh_symbols_get_len(void){
 #define ARRAY_TO_ENCODE_LEN	(40*4)
 static unsigned array_to_encode[ARRAY_TO_ENCODE_LEN];
 
+#if ENCODER_DC_VALUE
 tmt_data_t tmt_encode(int *data, 
                 int size, 
                 unsigned char* output,
@@ -207,10 +209,12 @@ tmt_data_t tmt_encode(int *data,
 
     return(encoding_parameters);
 }
+#else
+#endif
 
 void tmt_decode(unsigned char* input, int* output, int size, tmt_data_t parameters){
 
-    int k = (int)round(log((double)(parameters.R + 1))/log((double)parameters.M));
+    int k = (int)roundf(logf(parameters.R + 1)/logf(parameters.M));
     adaptive_arithmetic_set_number_of_symbols(parameters.M + 2);
     unsigned* temp = array_to_encode;
     for(int i = 0; i < ARRAY_TO_ENCODE_LEN; i++) array_to_encode[i] = 0;
