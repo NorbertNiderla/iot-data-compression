@@ -1,5 +1,6 @@
 #pragma once
 #include "fire.h"
+#include <stddef.h>
 
 
 void sprintzDecode(unsigned char* input, size_t input_buffer_size, int* output, int size, fire_coder_t* fire_state);

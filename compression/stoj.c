@@ -7,7 +7,7 @@
  *      stoj by Stojkoska, 2017
  */
 
-#include "bitstream.h"
+#include "include/bitstream.h"
 
 //stoj definitions:
 #define DELTA	(1)

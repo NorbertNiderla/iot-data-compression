@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <math.h>
 
-#include "arithmetic.h"
+#include "include/arithmetic.h"
 
 #define ENABLE_DEBUG	(0)
 #if ENABLE_DEBUG

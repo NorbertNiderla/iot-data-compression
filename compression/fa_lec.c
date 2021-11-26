@@ -4,8 +4,8 @@
 
 #include <string.h>
 
-#include "fa_lec.h"
-#include "bitstream.h"
+#include "include/fa_lec.h"
+#include "include/bitstream.h"
 
 #define ENABLE_DEBUG    (0)
 #if ENABLE_DEBUG

@@ -4,8 +4,8 @@
 #include <stdint.h>
 #include <math.h>
 
-#include "aac.h"
-#include "bitstream.h"
+#include "include/aac.h"
+#include "include/bitstream.h"
 
 #define ENABLE_DEBUG	(0)
 #if ENABLE_DEBUG

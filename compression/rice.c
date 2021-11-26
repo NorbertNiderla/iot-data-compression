@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
-#include "rice.h"
-#include "bitstream.h"
+#include "include/rice.h"
+#include "include/bitstream.h"
 
 #define DIM 1
 #define R_PARAMETER_PRECISE (0)

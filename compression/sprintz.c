@@ -6,10 +6,10 @@
 #include <stdbool.h>
 #include <math.h>
 
-#include "sprintz.h"
-#include "bitstream.h"
-#include "fire.h"
-#include "huffman.h"
+#include "include/sprintz.h"
+#include "include/bitstream.h"
+#include "include/fire.h"
+#include "include/huffman.h"
 
 #define DATA_WIDTH 32
 #define DIM 1

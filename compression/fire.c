@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdint.h>
-#include "fire.h"
+#include "include/fire.h"
 
 static uint32_t predict(uint32_t x, fire_coder_t* state){
     int32_t alpha;

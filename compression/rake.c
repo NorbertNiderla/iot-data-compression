@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "bitstream.h"
+#include "include/bitstream.h"
 
 #if RAKE_POS_PRINT
 #include <stdio.h>

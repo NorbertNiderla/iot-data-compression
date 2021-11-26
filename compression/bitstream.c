@@ -2,7 +2,7 @@
 #include <math.h>
 #include <string.h>
 
-#include "bitstream.h"
+#include "include/bitstream.h"
 
 #define DEBUG (0)
 #define RESET_WHEN_FULL (1)

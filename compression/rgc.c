@@ -2,7 +2,7 @@
 
 //RGC by Kalaivani, 2020
 
-#include "bitstream.h"
+#include "include/bitstream.h"
 
 #include <math.h>
 

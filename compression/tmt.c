@@ -7,8 +7,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "aac.h"
-#include "tmt.h"
+#include "include/aac.h"
+#include "include/tmt.h"
 
 #define M_MAX   (256)
 #define DATA_BITWIDTH   (16)

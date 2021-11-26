@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "bitstream.h"
-#include "huffman.h"
-#include "distribution.h"
+#include "include/bitstream.h"
+#include "include/huffman.h"
+#include "include/distribution.h"
 
 #define N_SYMBOLS (256)
 #define SIZE_ENCODE_LENGTH (8)

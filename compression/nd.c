@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-#include "bitstream.h"
+#include "include/bitstream.h"
 
 #define ENABLE_DEBUG    (0)
 #if ENABLE_DEBUG

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "bitstream.h"
+#include "include/bitstream.h"
 
 #define TYPE_3_CODE         (0)
 #define TYPE_2_CODE         (1)

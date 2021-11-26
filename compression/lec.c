@@ -2,8 +2,8 @@
 
 //LEC by Marcelloni, 2009
 
-#include "lec.h"
-#include "bitstream.h"
+#include "include/lec.h"
+#include "include/bitstream.h"
 
 #define DICTIONARY_L    (15)
 

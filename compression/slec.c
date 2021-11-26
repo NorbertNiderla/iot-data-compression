@@ -1,8 +1,8 @@
 //by Norbert Niderla 2021
 //SLEC by Liang, 2014
 
-#include "slec.h"
-#include "bitstream.h"
+#include "include/slec.h"
+#include "include/bitstream.h"
 
 static inline int compute_binary_log2(int d) {
 	int n = 0;

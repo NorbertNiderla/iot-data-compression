@@ -1,0 +1,3 @@
+ifneq (,$(filter compression,$(USEMODULE)))
+	INCLUDES += -I$(RIOTBASE)/iot-data-compression/compression/include
+endif

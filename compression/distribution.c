@@ -5,7 +5,7 @@
 #include <math.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "distribution.h"
+#include "include/distribution.h"
 
 #define SYMBOLS (256)
 #define ENABLE_DEBUG (0)
