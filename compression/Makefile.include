@@ -1,0 +1,4 @@
+ifneq (,$(filter compression,$(USEMODULE)))
+#	USEMODULE_INCLUDES += $(RIOTBASE)/micromole/system_common/include
+	INCLUDES += -I$(RIOTBASE)/../iot_data_compression/compression/include
+endif
