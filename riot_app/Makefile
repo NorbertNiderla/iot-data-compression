@@ -1,18 +1,11 @@
-APPLICATION = iot-data-compression
-
-INCLUDES += 
-RIOTBASE ?=$(CURDIR)/../../RIOT
-
-USEMODULE += compression
+RIOTBASE ?= $(CURDIR)/../..
 
 BOARD ?= native
 
-DEVELHELP ?= 1
+INCLUDES += -I$(RIOTBASE) -I$(RIOTBASE)/sys/include -I$(RIOTBASE)/core/include -I$(RIOTBASE)/drivers/include 
 
-QUIET ?= 1
+USEMODULE += compression
 
 CFLAGS += -Wno-unused-function
 
-include $(RIOTBASE)/Makefile.include
-
-
+include ../Makefile
