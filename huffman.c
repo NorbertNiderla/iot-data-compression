@@ -3,19 +3,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <stdbool.h>
 #include "bitstream.h"
 #include "huffman.h"
-#include "distribution.h"
 
 #define N_SYMBOLS (256)
 #define SIZE_ENCODE_LENGTH (8)
 
 #define ENABLE_DEBUG (0)
 
-uint16_t lengths[N_SYMBOLS];
-uint32_t codewords[N_SYMBOLS];
-uint8_t distribution_dens = 1;
+#define PRINT_TREE	(0)
+
+static uint16_t lengths[N_SYMBOLS] = { 0 };
+static uint32_t codewords[N_SYMBOLS] = { 0 };
+#if HUFFMAN_ADAPTIVE
+static uint16_t counts_enc[N_SYMBOLS] = { 0 };
+static uint16_t counts_dec[N_SYMBOLS] = { 0 };
+#endif
 
 static void calc_huffman_lengths(uint16_t* W, uint16_t n){
 	int16_t leaf = n-1;
@@ -82,33 +85,91 @@ static void calc_huffman_codewords(uint32_t* codewords, uint16_t* lengths, uint1
 		codewords[i] >>= (lengths[n-1]-lengths[i]);
 }
 
-int huffman_encode(unsigned char* input, int size, unsigned char* output, size_t output_buffer_size, bool new_table){
-	
-	if(new_table){
-		distribution_dens = setFrequencies(input, size, lengths);
+#if HUFFMAN_ADAPTIVE
+static void huffman_tree_start(uint16_t* counts){
+	for(int i = 0; i < N_SYMBOLS; i++){
+		counts[i] = 1;
+		lengths[i] = 1;
+	}
+	calc_huffman_lengths(lengths, N_SYMBOLS);
+	calc_huffman_codewords(codewords, lengths, N_SYMBOLS);
+}
+
+static void huffman_update_counts(unsigned char* data, unsigned size, uint16_t* counts){
+	for(unsigned i = 0; i < size; i++)
+		counts[data[i]]++;
+
+	if(counts[0] > 0x1FFF)
+		for(int i = 0; i < N_SYMBOLS; i++)
+			counts[i] >>= 4;		
+}
+#else
+void huffman_set_tree_from_stream(unsigned char* data, unsigned size){
+	for(int i = 0; i < N_SYMBOLS; i++){
+		lengths[i] = 0;
+		codewords[i] = 0;
+	}
+	for(unsigned i = 0; i < size; i++)
+		lengths[data[i]]++;
+
+	for(int i = 0; i < N_SYMBOLS; i++)
+		if(lengths[i] == 0)
+			lengths[i] = 1;
+
+	calc_huffman_lengths(lengths, N_SYMBOLS);
+	calc_huffman_codewords(codewords, lengths, N_SYMBOLS);
+
+#if PRINT_TREE
+	printf("Huffman tree:\n");
+	for(int i = 0; i < N_SYMBOLS; i++){
+		printf("%3d %6d %2d\n", i, codewords[i], lengths[i]);
+	}
+#endif
+}
+#endif
+
+#if HUFFMAN_ADAPTIVE
+unsigned huffman_encode(unsigned char* input, unsigned size, unsigned char* output, size_t output_buffer_size, unsigned reset_state)
+#else
+unsigned huffman_encode(unsigned char* input, unsigned size, unsigned char* output, size_t output_buffer_size)
+#endif
+{
+
+#if HUFFMAN_ADAPTIVE
+	static int huffman_tree_started = 0;
+	if(huffman_tree_started == 0){
+		huffman_tree_start(counts_enc);
+		huffman_tree_started = 1;
+	} else if (reset_state == 1){
+		huffman_tree_start(counts_enc);
+	} else {
+		for(int i = 0; i < N_SYMBOLS; i++)
+				lengths[i] = counts_enc[i];
+
 		calc_huffman_lengths(lengths, N_SYMBOLS);
 		calc_huffman_codewords(codewords, lengths, N_SYMBOLS);
 	}
-	
-#if ENABLE_DEBUG
-	printf("Huffman table: \n");
-	for(int i =0; i < N_SYMBOLS; i++)
-		printf("%3d %6ld %2d\n", i, codewords[i], lengths[i]);
 #endif
-
-	int n_bytes = 0;
+	
 	bitstream_state_t stream_state;
 	bitstream_init(&stream_state, output, output_buffer_size);
-	n_bytes += bitstream_append(&stream_state, size, SIZE_ENCODE_LENGTH);
-	n_bytes += bitstream_append(&stream_state, distribution_dens, DENS_ENCODE_BITS);
+	bitstream_append_bits(&stream_state, size, SIZE_ENCODE_LENGTH);
 
-	for(uint16_t i = 0; i < size; i++)
-		n_bytes += bitstream_append(&stream_state, codewords[input[i]], lengths[input[i]]);
-	n_bytes += bitstream_write_close(&stream_state);
+	for(uint16_t i = 0; i < size; i++){
+		bitstream_append_bits(&stream_state, codewords[input[i]], lengths[input[i]]);
+	}
+	bitstream_write_close(&stream_state);
+
+#if HUFFMAN_ADAPTIVE
+	huffman_update_counts(input, size, counts_enc);
+#endif
 	
-	return n_bytes;
+	return stream_state.stream_used_len;
 }
 
+/* not working version of decoding
+ * this one could be probably faster but while loop not cover all cases
+ *
 void huffman_decode(unsigned char* input, size_t input_buffer_size, unsigned char* output){
 	
 	bitstream_state_t stream_state;
@@ -117,13 +178,6 @@ void huffman_decode(unsigned char* input, size_t input_buffer_size, unsigned cha
 
 	unsigned long long size;
 	bitstream_read_bits(&stream_state, &size, SIZE_ENCODE_LENGTH);
-
-	unsigned long long dens;
-	bitstream_read_bits(&stream_state, &dens, DENS_ENCODE_BITS);
-	
-	setFrequencies_Dens(N_SYMBOLS, lengths, (uint8_t)dens);
-	calc_huffman_lengths(lengths, N_SYMBOLS);
-	calc_huffman_codewords(codewords, lengths, N_SYMBOLS);
 
 	for(uint16_t i = 0; i < size; i++){
 		unsigned long long bit = 0;
@@ -134,16 +188,14 @@ void huffman_decode(unsigned char* input, size_t input_buffer_size, unsigned cha
 		value = bit;
 		unsigned n_bits = lengths[0];
 		while(decoded == 0){
-#if ENABLE_DEBUG
-	printf("Act. it: %d\n", it);
-#endif
-
 			if((codewords[it] < value) & (n_bits == lengths[it]) ){
 				it++;
 			}
 			else if(codewords[it] == value){
 				decoded = 1;
 				output[i] = (unsigned char)it;
+				// debug 
+				printf("%d\n", output[i]);
 			}
 			else if(codewords[it]>value){
 				while(codewords[it]>value){
@@ -151,9 +203,6 @@ void huffman_decode(unsigned char* input, size_t input_buffer_size, unsigned cha
 					value <<= 1;
 					value |= bit;
 					n_bits++;
-#if ENABLE_DEBUG
-					printf("Act. n_bits, value: %d %d \n", n_bits, (uint16_t)value);
-#endif
 				}
 				while(lengths[it]<n_bits) it++;
 			}
@@ -169,4 +218,60 @@ void huffman_decode(unsigned char* input, size_t input_buffer_size, unsigned cha
 		}
 	}
 }
+*/
 
+#if HUFFMAN_ADAPTIVE
+void huffman_decode(unsigned char* input, size_t input_buffer_size, unsigned char* output, unsigned reset_state)
+#else
+void huffman_decode(unsigned char* input, size_t input_buffer_size, unsigned char* output)
+#endif
+{
+#if HUFFMAN_ADAPTIVE
+	static int huffman_tree_started = 0;
+	if(huffman_tree_started == 0){
+		huffman_tree_start(counts_dec);
+		huffman_tree_started = 1;
+	} else if (reset_state == 1){
+		huffman_tree_start(counts_dec);
+	} else {
+		for(int i = 0; i < N_SYMBOLS; i++)
+				lengths[i] = counts_dec[i];
+
+		calc_huffman_lengths(lengths, N_SYMBOLS);
+		calc_huffman_codewords(codewords, lengths, N_SYMBOLS);
+	}
+#endif
+
+	bitstream_state_t stream_state;
+	bitstream_init(&stream_state, input, input_buffer_size);
+	unsigned long long size;
+	bitstream_read_bits(&stream_state, &size, SIZE_ENCODE_LENGTH);
+
+	for(uint16_t i = 0; i < size; i++){
+		unsigned long long bit = 0;
+		unsigned long long value = 0;
+		uint8_t decoded = 0;
+		unsigned it = 0;
+		bitstream_read_bits(&stream_state, &bit, lengths[0]);
+		value = bit;
+		while(decoded == 0){
+			if(codewords[it] == value){
+				decoded = 1;
+				output[i] = (unsigned char)it;
+			}else if((codewords[it] != value) & (lengths[it] == lengths[it+1])){
+				it++;
+			}else if((codewords[it] != value) & (lengths[it] < lengths[it+1])){
+				unsigned n_bits = lengths[it+1] - lengths[it];
+				bitstream_read_bits(&stream_state, &bit, n_bits);
+				value <<= n_bits;
+				value |= bit;
+				it++;
+			}
+		}
+	}
+
+#if HUFFMAN_ADAPTIVE
+	huffman_update_counts(output, size, counts_dec);
+#endif
+	
+}

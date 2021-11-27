@@ -1,10 +1,12 @@
 //by Norbert Niderla, 2021
+
 //ALDC by Kolo, 2012
 
 #include <stdlib.h>
 #include <stdio.h>
 
 #include "bitstream.h"
+
 
 #define TYPE_3_CODE         (0)
 #define TYPE_2_CODE         (1)
@@ -61,7 +63,7 @@ static inline void normalize_write_val_C(int d, int log,
 	bitstream_append_bits(stream, codewords_C[log], len_C[log]);
 	bitstream_append_bits(stream, d, log);
 }
-
+#if ENCODER_DC_VALUE
 int aldc_encode(int *d, int size, unsigned char *output, int output_size, int dc_value) {
 	bitstream_state_t stream;
 	bitstream_init(&stream, output, output_size);
@@ -69,9 +71,7 @@ int aldc_encode(int *d, int size, unsigned char *output, int output_size, int dc
 
 	if(size != LOGS_ARRAY_LEN){
 		printf("aldc_encode: size is not equal to logs array\n");
-		return -1;
 	}
-
 	int F = 0;
 
 	for (int i = (size - 1); i > 0; i--)
@@ -142,6 +142,84 @@ int aldc_encode(int *d, int size, unsigned char *output, int output_size, int dc
 	return stream.stream_used_len;
 }
 
+#else
+int aldc_encode(int *d, int size, unsigned char *output, int output_size) {
+	bitstream_state_t stream;
+	bitstream_init(&stream, output, output_size);
+
+
+	if(size != LOGS_ARRAY_LEN){
+		printf("aldc_encode: size is not equal to logs array\n");
+	}
+	int F = 0;
+
+	for (int i = (size - 1); i > 0; i--)
+		d[i] -= d[i - 1];
+
+	for (int i = 0; i < size; i++)
+		F += d[i];
+
+	for (int i = 0; i < size; i++)
+		logs[i] = compute_binary_log2(d[i]);
+	if ((F >= 3 * size) & (F < 12 * size)) {
+		 bitstream_append_bits(&stream, TYPE_3_CODE, TYPE_BITS);
+		int bits_A = 0;
+		int bits_B = 0;
+		int bits_C = 0;
+		for (int i = 0; i < size; i++) {
+			bits_A += len_A[logs[i]];
+			bits_B += len_B[logs[i]];
+			bits_C += len_C[logs[i]];
+		}
+
+		if ((bits_A < bits_B) & (bits_A < bits_C)) {
+			bitstream_append_bits(&stream, TYPE_3_TABLE_A_CODE,
+			TYPE_3_TABLE_BITS);
+			for (int i = 0; i < size; i++) {
+				normalize_write_val_A(d[i], logs[i], &stream);
+			}
+		} else if ((bits_B < bits_A) & (bits_B < bits_C)) {
+			bitstream_append_bits(&stream, TYPE_3_TABLE_B_CODE,
+			TYPE_3_TABLE_BITS);
+			for (int i = 0; i < size; i++) {
+				normalize_write_val_B(d[i], logs[i], &stream);
+			}
+		} else {
+			bitstream_append_bits(&stream, TYPE_3_TABLE_C_CODE,
+			TYPE_3_TABLE_BITS);
+			for (int i = 0; i < size; i++) {
+				normalize_write_val_C(d[i], logs[i], &stream);
+			}
+		}
+	} else {
+		bitstream_append_bits(&stream, TYPE_2_CODE, TYPE_BITS);
+		int bits_A = 0;
+		int bits_B = 0;
+		for (int i = 0; i < size; i++) {
+			bits_A += len_A[logs[i]];
+			bits_B += len_B[logs[i]];
+		}
+
+		if (bits_A < bits_B) {
+			bitstream_append_bits(&stream, TYPE_2_TABLE_A_CODE,
+			TYPE_2_TABLE_BITS);
+			for (int i = 0; i < size; i++) {
+				normalize_write_val_A(d[i], logs[i], &stream);
+			}
+		} else {
+			bitstream_append_bits(&stream, TYPE_2_TABLE_B_CODE,
+			TYPE_2_TABLE_BITS);
+			for (int i = 0; i < size; i++) {
+				normalize_write_val_B(d[i], logs[i], &stream);
+			}
+		}
+	}
+
+	bitstream_write_close(&stream);
+	free(logs);
+	return stream.stream_used_len;
+}
+#endif
 static int val_decode_A(bitstream_state_t* stream) {
 	unsigned long long b = 0;
 	int output = 0;

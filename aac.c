@@ -59,7 +59,7 @@ unsigned adaptive_arithmetic_encode(unsigned* data, int size, unsigned char* out
 	total = bounds[current_number_of_symbols];
 
 	for(int i = 0; i < size; i++){
-		step = (code)ceilf((float)(high - low + 1) / (float)total);
+		step = (code)ceil((float)(high - low + 1) / (float)total);
 		high = low + (step * bounds[data[i] + 1]) - 1;
 		low = low + (step * bounds[data[i]]);
 #if ENABLE_DEBUG
@@ -143,8 +143,8 @@ void adaptive_arithmetic_decode(unsigned char* input, int bits, unsigned* data, 
 	total = bounds[current_number_of_symbols];
 
 	for(int i = 0; i < size; i++){
-		step = (code)ceilf((float)(high - low + 1)/(float)total);
-		cum = (code)ceilf((float)(value - low) / (float)step);
+		step = (code)ceil((float)(high - low + 1)/(float)total);
+		cum = (code)ceil((float)(value - low) / (float)step);
 		data[i] = arithmetic_decode_symbol(cum);
 
 		high = low + (step * bounds[data[i] + 1]) - 1;

@@ -7,6 +7,8 @@
 #include "fa_lec.h"
 #include "bitstream.h"
 
+
+
 #define ENABLE_DEBUG    (0)
 #if ENABLE_DEBUG
 #include <stdio.h>
@@ -49,6 +51,7 @@ static void reset_group_freq(void){
 	memset(group_freq, 0, DICTIONARY_L*sizeof(int));
 }
 
+#if ENCODER_DC_VALUE
 int fa_lec_encode(int* d, int size, unsigned char* output, int output_size, int dc_value){
 
 #if ENABLE_DEBUG
@@ -88,6 +91,44 @@ int fa_lec_encode(int* d, int size, unsigned char* output, int output_size, int 
 	return(stream.stream_used_len);
 }
 
+#else
+int fa_lec_encode(int* d, int size, unsigned char* output, int output_size){
+
+#if ENABLE_DEBUG
+	printf("DATA ENCODED: ");
+	for (int i = 0; i < size; i++)
+		printf("%d, ", d[i]);
+	printf("\n");
+#endif
+
+	reset_rotary_ptr();
+	reset_group_freq();
+
+	bitstream_state_t stream;
+	bitstream_init(&stream, output, output_size);
+	int bytes = 0;
+	int log;
+	int most_frequent_group = 0;
+
+	for (int i = (size - 1); i > 0; i--) d[i] -= d[i - 1];
+	for (int i = 0; i < size; i++) {
+		log = compute_binary_log2(d[i]);
+
+		 bitstream_append_bits(&stream, codewords[rotary_ptr[log]], len[rotary_ptr[log]]);
+		d[i] = d[i] > 0 ? d[i] : d[i] + norm[log];
+		 bitstream_append_bits(&stream, d[i], log);
+
+		group_freq[log]++;
+		if(group_freq[log] > group_freq[most_frequent_group]){
+			set_rotary_ptr(log);
+			most_frequent_group = log;
+		}
+	}
+
+	 bitstream_write_close(&stream);
+	return(stream.stream_used_len);
+}
+#endif
 static int fa_lec_decode_value(bitstream_state_t* stream, int group, int* d){
 	int log = 0;
 	while(log < DICTIONARY_L){

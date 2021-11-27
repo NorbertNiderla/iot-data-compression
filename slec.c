@@ -34,6 +34,7 @@ static inline void normalize_append_d(int d, int norm, int len,
 	bitstream_append_bits(stream, d, len);
 }
 
+#if ENCODER_DC_VALUE
 int slec_encode(int *d, int size, unsigned char *output, int output_size, int dc_value) {
 
 	bitstream_state_t stream;
@@ -133,6 +134,106 @@ int slec_encode(int *d, int size, unsigned char *output, int output_size, int dc
 	return stream.stream_used_len;
 }
 
+#else
+int slec_encode(int *d, int size, unsigned char *output, int output_size) {
+
+	bitstream_state_t stream;
+	bitstream_init(&stream, output, output_size);
+	int bytes = 0;
+	int current_s = 0;
+
+	for (int i = (size - 1); i > 0; i--)
+		d[i] -= d[i - 1];
+
+	for (int i = 0; i < size; i++) {
+		switch (compute_binary_log2(d[i])) {
+		case 0:
+			if (current_s == 0)
+				bitstream_append_bits(&stream, 0, 2);
+			else if (current_s - 1 == 0)
+				bitstream_append_bits(&stream, 2, 2);
+			else {
+				bitstream_append_bits(&stream, 3, 2);
+				bitstream_append_bits(&stream, 0, 2);
+			}
+			current_s = 0;
+			break;
+		case 1:
+			append_s_stamp(current_s, 1, 2, 3, &stream);
+			current_s = 1;
+			normalize_append_d(d[i], 1, 1, &stream);
+			break;
+		case 2:
+			append_s_stamp(current_s, 2, 3, 3, &stream);
+			current_s = 2;
+			normalize_append_d(d[i], 3, 2, &stream);
+			break;
+		case 3:
+			append_s_stamp(current_s, 3, 4, 3, &stream);
+			current_s = 3;
+			normalize_append_d(d[i], 7, 3, &stream);
+			break;
+		case 4:
+			append_s_stamp(current_s, 4, 5, 3, &stream);
+			current_s = 4;
+			normalize_append_d(d[i], 15, 4, &stream);
+			break;
+		case 5:
+			append_s_stamp(current_s, 5, 6, 3, &stream);
+			current_s = 5;
+			normalize_append_d(d[i], 31, 5, &stream);
+			break;
+		case 6:
+			append_s_stamp(current_s, 6, 14, 4, &stream);
+			current_s = 6;
+			normalize_append_d(d[i], 63, 6, &stream);
+			break;
+		case 7:
+			append_s_stamp(current_s, 7, 30, 5, &stream);
+			current_s = 7;
+			normalize_append_d(d[i], 127, 7, &stream);
+			break;
+		case 8:
+			append_s_stamp(current_s, 8, 62, 6, &stream);
+			current_s = 8;
+			normalize_append_d(d[i], 255, 8, &stream);
+			break;
+		case 9:
+			append_s_stamp(current_s, 9, 126, 7, &stream);
+			current_s = 9;
+			normalize_append_d(d[i], 511, 9, &stream);
+			break;
+		case 10:
+			append_s_stamp(current_s, 10, 254, 8, &stream);
+			current_s = 10;
+			normalize_append_d(d[i], 1023, 10, &stream);
+			break;
+		case 11:
+			append_s_stamp(current_s, 11, 510, 9, &stream);
+			current_s = 11;
+			normalize_append_d(d[i], 2047, 11, &stream);
+			break;
+		case 12:
+			append_s_stamp(current_s, 12, 1022, 10, &stream);
+			current_s = 12;
+			normalize_append_d(d[i], 4095, 12, &stream);
+			break;
+		case 13:
+			append_s_stamp(current_s, 13, 2046, 11, &stream);
+			current_s = 13;
+			normalize_append_d(d[i], 8191, 13, &stream);
+			break;
+		case 14:
+			append_s_stamp(current_s, 14, 4094, 12, &stream);
+			current_s = 14;
+			normalize_append_d(d[i], 16383, 14, &stream);
+			break;
+		}
+	}
+	bitstream_write_close(&stream);
+	return stream.stream_used_len;
+}
+#endif
 static inline int read_renormalize_val(int bits, int lim, int norm,
 		bitstream_state_t *stream) {
 	unsigned long long val;

@@ -12,6 +12,7 @@
 #pragma message "nd: debug enabled"
 #endif
 
+#if ENCODER_DC_VALUE
 int nd_encode(int *data, int size, unsigned char *output,
 		int output_buffer_size, int dc_value) {
 
@@ -91,6 +92,86 @@ int nd_encode(int *data, int size, unsigned char *output,
 	return stream.stream_used_len;
 }
 
+#else
+int nd_encode(int *data, int size, unsigned char *output,
+		int output_buffer_size) {
+
+#if ENABLE_DEBUG
+	printf("DATA ENCODED: ");
+	for (int i = 0; i < size; i++)
+		printf("%d, ", data[i]);
+	printf("\n");
+#endif
+
+	bitstream_state_t stream;
+	bitstream_init(&stream, output, output_buffer_size);
+	for (int i = (size - 1); i > 0; i--)
+		data[i] -= data[i - 1];
+	int bytes = 0;
+
+	for (int i = 0; i < size; i++) {
+		switch (data[i]) {
+		case 0:
+			bitstream_append_bits(&stream, 0, 2);
+			break;
+		case -1:
+			bitstream_append_bits(&stream, 2, 3);
+			break;
+		case 1:
+			bitstream_append_bits(&stream, 3, 3);
+			break;
+		case -2:
+			bitstream_append_bits(&stream, 8, 4);
+			break;
+		case 2:
+			bitstream_append_bits(&stream, 9, 4);
+			break;
+		case -3:
+			bitstream_append_bits(&stream, 10, 4);
+			break;
+		case 3:
+			bitstream_append_bits(&stream, 11, 4);
+			break;
+		case -4:
+			bitstream_append_bits(&stream, 24, 5);
+			break;
+		case 4:
+			bitstream_append_bits(&stream, 25, 5);
+			break;
+		case -5:
+			bitstream_append_bits(&stream, 26, 5);
+			break;
+		case 5:
+			bitstream_append_bits(&stream, 27, 5);
+			break;
+		case -6:
+			bitstream_append_bits(&stream, 56, 6);
+			break;
+		case 6:
+			bitstream_append_bits(&stream, 57, 6);
+			break;
+		case -7:
+			bitstream_append_bits(&stream, 58, 6);
+			break;
+		case 7:
+			bitstream_append_bits(&stream, 59, 6);
+			break;
+		default:
+			bitstream_append_bits(&stream, 15, 4);
+			if (data[i] >= 0) {
+				bitstream_append_bits(&stream, 0, 1);
+				bitstream_append_bits(&stream, data[i], 15);
+			} else {
+				bitstream_append_bits(&stream, 1, 1);
+				bitstream_append_bits(&stream, -data[i], 15);
+			}
+			break;
+		}
+	}
+	bitstream_write_close(&stream);
+	return stream.stream_used_len;
+}
+#endif
 void nd_decode(unsigned char *input, int input_size, int *d, int size) {
 
 	bitstream_state_t stream;

@@ -64,6 +64,20 @@ void set_bounds_w_laplace_distribution(unsigned number_of_symbols, int sd){
 #endif
 }
 
+/*
+static void set_laplace_distribution(unsigned number_of_symbols, unsigned* array, int sd){
+	for (unsigned i = 0; i < number_of_symbols; i++) {
+		array[i] = (unsigned)round(LAPLACE_DIST_PRECISION * SQUARE_2 * 0.5 / sd * exp(-i * SQUARE_2 / sd))*COUNT_COEFF;
+		if (array[i] == 0) {
+			for (unsigned k = i; k < number_of_symbols; k++) {
+				array[k] = 1*COUNT_COEFF;
+			}
+			break;
+		}
+	}
+}
+*/
+
 void set_bounds(unsigned number_of_symbols, unsigned* counts){
     bounds = (unsigned*)realloc(bounds, (number_of_symbols+1)*sizeof(unsigned));
     bounds[0] = 0;
