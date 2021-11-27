@@ -216,7 +216,6 @@ int aldc_encode(int *d, int size, unsigned char *output, int output_size) {
 	}
 
 	bitstream_write_close(&stream);
-	free(logs);
 	return stream.stream_used_len;
 }
 #endif

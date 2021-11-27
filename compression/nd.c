@@ -107,7 +107,6 @@ int nd_encode(int *data, int size, unsigned char *output,
 	bitstream_init(&stream, output, output_buffer_size);
 	for (int i = (size - 1); i > 0; i--)
 		data[i] -= data[i - 1];
-	int bytes = 0;
 
 	for (int i = 0; i < size; i++) {
 		switch (data[i]) {
