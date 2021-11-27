@@ -6,7 +6,6 @@
 
 #include "bitstream.h"
 #include "tans.h"
-#include "include/array_lib.h"
 
 #define L 				(512)
 #define L_BITS 			(9)
