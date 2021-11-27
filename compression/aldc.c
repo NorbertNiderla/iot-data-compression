@@ -7,6 +7,7 @@
 
 #include "bitstream.h"
 
+
 #define TYPE_3_CODE         (0)
 #define TYPE_2_CODE         (1)
 #define TYPE_BITS           (1)
