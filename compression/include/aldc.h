@@ -8,7 +8,7 @@
 #ifndef COMPRESSION_IOT_INCLUDE_ALDC_H_
 #define COMPRESSION_IOT_INCLUDE_ALDC_H_
 
-#define ENCODER_DV_VALUE    (1)
+#define ENCODER_DC_VALUE    (1)
 
 #if ENCODER_DC_VALUE
 int aldc_encode(int *d, int size, unsigned char *output, int output_size, int dc_value);
