@@ -2,7 +2,7 @@
 
 //RGC by Kalaivani, 2020
 
-#include "include/bitstream.h"
+#include "bitstream.h"
 
 #include <math.h>
 
@@ -26,6 +26,7 @@ static int rice_parameter_estimate(int parameter) {
 	return r;
 }
 
+#if ENCODER_DC_VALUE
 int rgc_encode(int *d, int size, unsigned char *output, int output_buffer_size, int dc_value) {
 
 #if ENABLE_DEBUG
@@ -93,6 +94,73 @@ int rgc_encode(int *d, int size, unsigned char *output, int output_buffer_size, 
 	return stream.stream_used_len;
 }
 
+#else
+int rgc_encode(int *d, int size, unsigned char *output, int output_buffer_size) {
+
+#if ENABLE_DEBUG
+	printf("DATA ENCODED: ");
+	for (int i = 0; i < size; i++)
+		printf("%d, ", d[i]);
+	printf("\n");
+#endif
+
+	for (int i = 0; i < PROB_COUNT_LEN; i++)
+		prob_count[i] = 0;
+	for (int i = (size - 1); i > 0; i--)
+		d[i] -= d[i - 1];
+
+	int min = 0;
+	for (int i = 0; i < size; i++)
+		if (d[i] < min)
+			min = d[i];
+
+	for (int i = 0; i < size; i++) {
+		d[i] -= min;
+		if (d[i] < PROB_COUNT_LEN - 1)
+			prob_count[d[i]]++;
+		else
+			prob_count[PROB_COUNT_LEN - 1]++;
+	}
+
+	int prob = 0;
+	int idx = 0;
+	for (int i = 0; i < PROB_COUNT_LEN; i++) {
+		if (prob_count[i] > prob) {
+			prob = prob_count[i];
+			idx = i;
+		}
+	}
+	int r = rice_parameter_estimate(idx);
+
+	bitstream_state_t stream;
+	bitstream_init(&stream, output, output_buffer_size);
+	if (min < 0) {
+		bitstream_append_bits(&stream, 1, 1);
+		bitstream_append_bits(&stream, -min, 15);
+	} else {
+		bitstream_append_bits(&stream, min, 16);
+	}
+
+	bitstream_append_bits(&stream, r, R_ENCODE_BITS);
+	for (int i = 0; i < size; i++) {
+		int s = d[i] >> r;
+		if (s > 64){
+			for(int j = 0; j < s; j++){
+				if(bitstream_append_bit(&stream, 1) == (-1)) return(-1);
+			}
+#if ENABLE_DEBUG
+			printf("s is out of reasonable bound\n");
+#endif
+		} else {
+			if(bitstream_append_bits(&stream, ~(0xFFFFFFFFFFFFFFFF << s),s) == (-1)) return(-1);
+		}
+		if(bitstream_append_bits(&stream, 0, 1) == (-1)) return(-1);
+		if(bitstream_append_bits(&stream, d[i] & (~(0xFFFFFFFF << r)), r) == (-1)) return(-1);
+	}
+	if(bitstream_write_close(&stream) == (-1)) return(-1);
+	return stream.stream_used_len;
+}
+#endif
 void rgc_decode(unsigned char *input, int input_size, int *d, int size) {
 	bitstream_state_t stream;
 	bitstream_init(&stream, input, input_size);

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "include/bitstream.h"
+#include "bitstream.h"
 
 #if RAKE_POS_PRINT
 #include <stdio.h>
@@ -55,6 +55,7 @@ static int rake_core_encode(unsigned char *data, int size, unsigned char *output
     return(output_stream.stream_used_len);
 }
 
+#if ENCODER_DC_VALUE
 int rake_encode(int16_t* data, int size, unsigned char* output, int output_buffer_size, int dc_value){
     for (int i = (size - 1); i > 0; i--) data[i] -= data[i - 1];
     data[0] -= dc_value;
@@ -62,6 +63,14 @@ int rake_encode(int16_t* data, int size, unsigned char* output, int output_buffe
     int bytes = rake_core_encode((unsigned char*)data, size*2, output, output_buffer_size);
     return(bytes);
 }
+#else
+int rake_encode(int16_t* data, int size, unsigned char* output, int output_buffer_size){
+	for (int i = (size - 1); i > 0; i--) data[i] -= data[i - 1];
+	    for(int i=0;i<size;i++) data[i] = data[i]<0 ? -2*data[i]-1 : 2*data[i];
+	    int bytes = rake_core_encode((unsigned char*)data, size*2, output, output_buffer_size);
+	    return(bytes);
+}
+#endif
 
 static int rake_core_decode(unsigned char *input, int input_size, unsigned char* output, int output_buffer_size) {
     bitstream_state_t stream;

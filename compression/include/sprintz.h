@@ -1,9 +1,24 @@
-#pragma once
-#include "fire.h"
-#include <stddef.h>
+/**
+ * by Norbert Niderla, 2021
+ * 
+ * Sprintz by Blalock 
+ */
 
 
-void sprintzDecode(unsigned char* input, size_t input_buffer_size, int* output, int size, fire_coder_t* fire_state);
-int sprintzEncode(const int* input, int size, unsigned char* output, size_t output_buffer_size, bool new_huff_table, fire_coder_t* fire_state);
-int sprintzEncode_tans(const int* input, int size, unsigned char* output, size_t output_buffer_size, bool new_huff_table, fire_coder_t* fire_state);
-void zigzag(int* data, int size);
+#ifndef COMPRESSION_IOT_INCLUDE_SPRINTZ_H_
+#define COMPRESSION_IOT_INCLUDE_SPRINTZ_H_
+#include "bitstream.h"
+
+#define BITPACKING_BATCH	(8)
+
+void sprintz_encode(int* data,
+                    int size, 
+                    bitstream_state_t* stream,
+                    unsigned reset_state);
+
+unsigned sprintz_decode(bitstream_state_t* stream,
+                        unsigned  size,
+                        int* data,
+                        unsigned reset_state);
+
+#endif

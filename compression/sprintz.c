@@ -1,38 +1,30 @@
-//by Norbert Niderla, 2020
-//Sprintz by Blalock
-
 #include <stdlib.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <math.h>
+#include <assert.h>
 
-#include "include/sprintz.h"
-#include "include/bitstream.h"
-#include "include/fire.h"
-#include "include/huffman.h"
+#include "sprintz.h"
+#include "bitstream.h"
+#include "fire.h"
+#include "tans.h"
+#include "huffman.h"
 
-#define DATA_WIDTH 32
-#define DIM 1
 
-void zigzag(int* data, int size){
-	for(int idx=0;idx<size;idx++){
-		if(data[idx]<0)data[idx] = -2*data[idx]-1;
-		else data[idx] = 2*data[idx];
-	}
+#define SB_ENCODING_BITS	(5)
+
+static void zigzag_encode(int* data, int size){
+	for(int i = 0; i < size; i++)
+		data[i] = (data[i] >> 31) ^ (data[i] << 1);
 }
 
-static void zigzagDecode(int* data, int size){
-	for(int idx=0;idx<size;idx++){
-		if(data[idx]%2==1)data[idx]=(data[idx]+1)/(-2);
-		else data[idx] = data[idx]/2;
-	}
+static void zigzag_decode(int* data, int size){
+	for(int i = 0; i < size; i++)
+		data[i] = (data[i] >> 1) ^ -(data[i] & 1);
 }
 
-static int countSignificantBits(int* data, int size, int offset)
+static unsigned count_significant_bits(int* data, int size)
 {
 	int sb = 0;
-	int temp = DATA_WIDTH;
-	for (int idx = offset; idx < DIM*size; idx+=DIM){
+	int temp = 32;
+	for (int idx = 0; idx < size; idx++){
 		if(data[idx]==0) temp = 0;
 		else temp = 32 - __builtin_clz(data[idx]);
 		if(temp > sb) sb = temp;
@@ -40,57 +32,63 @@ static int countSignificantBits(int* data, int size, int offset)
 	return sb;
 }
 
-int sprintzEncode(const int* input, int size, unsigned char* output, size_t output_buffer_size, bool new_huff_table, fire_coder_t* fire_state){
-	int* int_buffer = (int*)malloc(DIM*size*sizeof(int));
-	unsigned char* char_buffer = (unsigned char*)malloc(DIM*3*size*sizeof(unsigned char));
-	int* sb = (int*)malloc(DIM*sizeof(int));
+static void bitpacking_pack(int* data, unsigned size, bitstream_state_t* stream){
+	div_t loops = div(size, BITPACKING_BATCH);
+	assert(loops.rem == 0); /*size must be dividable by BITPACKING_BATCH */
 
-	fireEncode(input,size,int_buffer, fire_state);
-	zigzag(int_buffer,DIM*size);
-	for(int k = 0; k<DIM; k++) sb[k] = countSignificantBits(int_buffer,size,k);
-
-	bitstream_state_t state;
-	bitstream_state_t* state_p = &state;
-	bitstream_init(state_p, char_buffer, DIM*3*size);
-
-	for(int k = 0; k<DIM; k++) bitstream_append(state_p, sb[k], 5);
-	for(int k = 0; k<DIM; k++){
-		for(int x = k; x<DIM*size; x+=DIM){
-			bitstream_append(state_p, int_buffer[x],sb[k]);
+	for(int i = 0; i < loops.quot; i++){
+		unsigned bits = count_significant_bits(&data[i*BITPACKING_BATCH], BITPACKING_BATCH);
+		bitstream_append_bits(stream, bits, SB_ENCODING_BITS);
+		for(int x = 0; x < BITPACKING_BATCH; x++){
+			bitstream_append_bits(stream, data[i*BITPACKING_BATCH + x], bits);
 		}
 	}
-	bitstream_write_close(state_p);
-
-	int bytes = huffman_encode(char_buffer,state.stream_used_len,output,output_buffer_size, new_huff_table);
-
-	free(int_buffer);
-	free(char_buffer);
-	free(sb);
-	return bytes*8;
 }
 
-void sprintzDecode(unsigned char* input, size_t input_buffer_size, int* output, int size, fire_coder_t* fire_state){
-	unsigned char* char_buffer = (unsigned char*)malloc(2*size*sizeof(unsigned char));
-
-	huffman_decode(input, input_buffer_size, char_buffer);
-
-	bitstream_state_t state;
-	bitstream_state_t* state_p = &state;
-	bitstream_init(state_p, char_buffer, 2*size);
-
-	int* int_buffer = (int*)calloc(DIM*size,sizeof(int));
-	int* sb = (int*)malloc(DIM*sizeof(int));
-
-	for(int k = 0; k<DIM; k++) bitstream_read_bits_int(state_p,&sb[k],5);
-	for(int k = 0; k<DIM; k++){
-		for(int x = k; x<DIM*size; x+=DIM){
-			bitstream_read_bits_int(state_p, &int_buffer[x],sb[k]);
+static unsigned bitpacking_unpack(bitstream_state_t* stream, unsigned size, int* data){
+	unsigned samples_read = 0;
+	unsigned read_bytes = 0;
+	unsigned long long bits;
+	unsigned data_idx = 0;
+	while ( read_bytes < size ){
+		read_bytes += bitstream_read_bits(stream, &bits, SB_ENCODING_BITS);
+		for(int x = 0; x < BITPACKING_BATCH; x++){
+			read_bytes += bitstream_read_bits_int(stream, &data[data_idx], bits);
+			data_idx++;
 		}
+		samples_read += BITPACKING_BATCH;
+	}
+	return samples_read;
+}
+
+void sprintz_encode(int* data, int size, bitstream_state_t* stream, unsigned reset_state){
+	static fire_coder_t fire_state;
+	static unsigned fire_state_initialised = 0;
+	if(fire_state_initialised == 0){
+		fire_init(FIRE_LEARN_SHIFT, FIRE_BIT_WIDTH, &fire_state);
+		fire_state_initialised = 1;
+	} else if(reset_state == 1){
+		fire_reset(&fire_state);
 	}
 
-	zigzagDecode(int_buffer, DIM*size);
-	fireDecode(int_buffer,size,output, fire_state);
-	free(int_buffer);
-	free(char_buffer);
-	free(sb);
+	fire_encode(data, size, &fire_state);
+	zigzag_encode(data, size);
+	bitpacking_pack(data, size, stream);
+}
+
+unsigned sprintz_decode(bitstream_state_t* stream, unsigned size, int* data, unsigned reset_state){
+	static fire_coder_t fire_state;
+	static unsigned fire_state_initialised = 0;
+	if(fire_state_initialised == 0){
+		fire_init(FIRE_LEARN_SHIFT, FIRE_BIT_WIDTH, &fire_state);
+		fire_state_initialised = 1;
+	} else if(reset_state == 1){
+		fire_reset(&fire_state);
+	}
+	
+	unsigned samples = bitpacking_unpack(stream, size, data);
+	zigzag_decode(data, samples);
+	fire_decode(data, samples, &fire_state);
+
+	return samples;
 }

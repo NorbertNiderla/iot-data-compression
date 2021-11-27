@@ -2,7 +2,7 @@
 
 //MINDIFF by Campobello, 2015
 
-#include "include/bitstream.h"
+#include "bitstream.h"
 
 #define MINDIFF_MU_SHIFTED	(0)
 
