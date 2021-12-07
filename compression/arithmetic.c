@@ -1,17 +1,13 @@
 //by Norbert Niderla, 2021
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
 #include <math.h>
 
 #include "arithmetic.h"
 
 #define ENABLE_DEBUG	(0)
-#if ENABLE_DEBUG
-#include <stdio.h>
-#pragma message "arithmetic: debug enabled"
-#endif
+#include "debug.h"
 
 #define code_value_bits	(32)
 #define top_value 		(0xFFFFFFFF)
@@ -42,9 +38,9 @@ void set_bounds_w_laplace_distribution(unsigned number_of_symbols, int sd){
 		}
 	}
 #if ENABLE_DEBUG
-    printf("distribution:\n");
+    DEBUG("distribution:\n");
     for(unsigned i=1; i < number_of_symbols+1; i++){
-    	printf("%d\n", bounds[i]);
+    	DEBUG("%d\n", bounds[i]);
     }
 #endif
 	bounds[number_of_symbols + 1] = bounds[2]; // sign symbol
@@ -57,9 +53,9 @@ void set_bounds_w_laplace_distribution(unsigned number_of_symbols, int sd){
     current_number_of_symbols = number_of_symbols + 2;
 
 #if ENABLE_DEBUG
-    printf("\nbounds:\n");
+    DEBUG("\nbounds:\n");
     for(unsigned i=0; i <= current_number_of_symbols; i++){
-    	printf("%d\n", bounds[i]);
+    	DEBUG("%d\n", bounds[i]);
     }
 #endif
 }
@@ -88,11 +84,11 @@ void set_bounds(unsigned number_of_symbols, unsigned* counts){
 }
 
 void print_bounds(void){
-    printf("Arithmetic coding bounds:\n");
+    DEBUG("Arithmetic coding bounds:\n");
     for(unsigned i = 0; i <= current_number_of_symbols; i++){
-        printf("%d. %d\n", i, bounds[i]);
+        DEBUG("%d. %d\n", i, bounds[i]);
     }
-    printf("\n");
+    DEBUG("\n");
 }
 
 static unsigned* output;
@@ -110,7 +106,7 @@ static inline unsigned output_bit(unsigned bit){
 		bits_avail=32;
 		output_index++;
 		if(output_index >= output_size){
-			printf("arithemtic_encode: output_bit: output buffer overflow");
+			DEBUG("arithemtic_encode: output_bit: output buffer overflow");
 		}
 	}
 	while(bits_to_follow){
@@ -122,7 +118,7 @@ static inline unsigned output_bit(unsigned bit){
 			bits_avail=32;
 			output_index++;
 			if(output_index >= output_size){
-				printf("arithemtic_encode: output_bit: output buffer overflow");
+				DEBUG("arithemtic_encode: output_bit: output buffer overflow");
 			}
 		}
 	}
@@ -141,11 +137,11 @@ unsigned arithmetic_encode(unsigned* data, int size, unsigned* output_ptr, int o
 	bits_to_follow = 0;
 
 #if ENABLE_DEBUG
-	printf("\n arithmetic coding input:\n");
+	DEBUG("\n arithmetic coding input:\n");
 	for(int i = 0; i < size;i++ ){
-		printf("%d ", data[i]);
+		DEBUG("%d ", data[i]);
 	}
-	printf("\n\n");
+	DEBUG("\n\n");
 #endif
 	for(int i = 0; i < size; i++){
 		range = high - low;
@@ -153,9 +149,9 @@ unsigned arithmetic_encode(unsigned* data, int size, unsigned* output_ptr, int o
 		low = low + (code)floor((float)range * ((float)bounds[data[i]]/(float)bounds[current_number_of_symbols]));
 #if ENABLE_DEBUG
 		if(high == low){
-			printf("arithmetic_encode: low equals high - insufficient precision: high: %lx, low: %lx\n", high, low);
+			DEBUG("arithmetic_encode: low equals high - insufficient precision: high: %lx, low: %lx\n", high, low);
 		}else if(low > high){
-			printf("arithmetic_encode: low greater than high - insufficient precision: high: %lx, low: %lx\n", high, low);
+			DEBUG("arithmetic_encode: low greater than high - insufficient precision: high: %lx, low: %lx\n", high, low);
 		}
 #endif
         while(1) {
@@ -218,7 +214,7 @@ void arithmetic_decode(unsigned* input, int bits, unsigned* data, int size){
 		cum = (code)floor(((float)(value - low + 1)*(float)bounds[current_number_of_symbols] - 1)/(float)range);
 		data[i] = arithmetic_decode_symbol(cum);
 		if(data[i] == (unsigned)ERROR_SYMBOL){
-			printf("arithmetic_decode: error symbol while decoding");
+			DEBUG("arithmetic_decode: error symbol while decoding");
 		}
 		high = low + (code)ceil((float)range * ((float)bounds[data[i] + 1]/(float)bounds[current_number_of_symbols]));
 		low = low + (code)floor((float)range * ((float)bounds[data[i]]/(float)bounds[current_number_of_symbols]));
@@ -254,11 +250,11 @@ void arithmetic_decode(unsigned* input, int bits, unsigned* data, int size){
 	data[size - 1] = arithmetic_decode_symbol(cum);
 
 #if ENABLE_DEBUG
-	printf("\n arithmetic decoding output:\n");
+	DEBUG("\n arithmetic decoding output:\n");
 	for(int i = 0; i < size;i++ ){
-		printf("%d ", data[i]);
+		DEBUG("%d ", data[i]);
 	}
-	printf("\n\n");
+	DEBUG("\n\n");
 #endif
 
 }

@@ -1,6 +1,5 @@
 //by Norbert Niderla, 2021
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include "bitstream.h"
@@ -10,6 +9,7 @@
 #define SIZE_ENCODE_LENGTH (8)
 
 #define ENABLE_DEBUG (0)
+#include "debug.h"
 
 #define PRINT_TREE	(0)
 
@@ -120,9 +120,9 @@ void huffman_set_tree_from_stream(unsigned char* data, unsigned size){
 	calc_huffman_codewords(codewords, lengths, N_SYMBOLS);
 
 #if PRINT_TREE
-	printf("Huffman tree:\n");
+	DEBUG("Huffman tree:\n");
 	for(int i = 0; i < N_SYMBOLS; i++){
-		printf("%3d %6d %2d\n", i, codewords[i], lengths[i]);
+		DEBUG("%3d %6d %2d\n", i, codewords[i], lengths[i]);
 	}
 #endif
 }
@@ -195,7 +195,7 @@ void huffman_decode(unsigned char* input, size_t input_buffer_size, unsigned cha
 				decoded = 1;
 				output[i] = (unsigned char)it;
 				// debug 
-				printf("%d\n", output[i]);
+				DEBUG("%d\n", output[i]);
 			}
 			else if(codewords[it]>value){
 				while(codewords[it]>value){

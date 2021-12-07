@@ -9,10 +9,7 @@
 #define R_ENCODE_BITS   (4)
 
 #define ENABLE_DEBUG    (0)
-#if ENABLE_DEBUG
-#include <stdio.h>
-#pragma message "rgc: debug enabled"
-#endif
+#include "debug.h"
 
 #define PROB_COUNT_LEN	(257)
 static int prob_count[PROB_COUNT_LEN] = { 0 };
@@ -30,10 +27,10 @@ static int rice_parameter_estimate(int parameter) {
 int rgc_encode(int *d, int size, unsigned char *output, int output_buffer_size, int dc_value) {
 
 #if ENABLE_DEBUG
-	printf("DATA ENCODED: ");
+	DEBUG("DATA ENCODED: ");
 	for (int i = 0; i < size; i++)
-		printf("%d, ", d[i]);
-	printf("\n");
+		DEBUG("%d, ", d[i]);
+	DEBUG("\n");
 #endif
 
 	for (int i = 0; i < PROB_COUNT_LEN; i++)
@@ -82,7 +79,7 @@ int rgc_encode(int *d, int size, unsigned char *output, int output_buffer_size, 
 				if(bitstream_append_bit(&stream, 1) == (-1)) return(-1);
 			}
 #if ENABLE_DEBUG
-			printf("s is out of reasonable bound\n");
+			DEBUG("s is out of reasonable bound\n");
 #endif
 		} else {
 			if(bitstream_append_bits(&stream, ~(0xFFFFFFFFFFFFFFFF << s),s) == (-1)) return(-1);
@@ -98,10 +95,10 @@ int rgc_encode(int *d, int size, unsigned char *output, int output_buffer_size, 
 int rgc_encode(int *d, int size, unsigned char *output, int output_buffer_size) {
 
 #if ENABLE_DEBUG
-	printf("DATA ENCODED: ");
+	DEBUG("DATA ENCODED: ");
 	for (int i = 0; i < size; i++)
-		printf("%d, ", d[i]);
-	printf("\n");
+		DEBUG("%d, ", d[i]);
+	DEBUG("\n");
 #endif
 
 	for (int i = 0; i < PROB_COUNT_LEN; i++)
@@ -149,7 +146,7 @@ int rgc_encode(int *d, int size, unsigned char *output, int output_buffer_size) 
 				if(bitstream_append_bit(&stream, 1) == (-1)) return(-1);
 			}
 #if ENABLE_DEBUG
-			printf("s is out of reasonable bound\n");
+			DEBUG("s is out of reasonable bound\n");
 #endif
 		} else {
 			if(bitstream_append_bits(&stream, ~(0xFFFFFFFFFFFFFFFF << s),s) == (-1)) return(-1);
@@ -190,9 +187,9 @@ void rgc_decode(unsigned char *input, int input_size, int *d, int size) {
 		d[i] += d[i - 1];
 
 #if ENABLE_DEBUG
-	printf("DATA DECODED: ");
+	DEBUG("DATA DECODED: ");
 	for (int i = 0; i < size; i++)
-		printf("%d, ", d[i]);
-	printf("\n");
+		DEBUG("%d, ", d[i]);
+	DEBUG("\n");
 #endif 
 }

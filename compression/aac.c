@@ -8,10 +8,7 @@
 #include "bitstream.h"
 
 #define ENABLE_DEBUG	(0)
-#if ENABLE_DEBUG
-#include <stdio.h>
-#pragma message "adaptive arithmetic: debug enabled"
-#endif
+#include "debug.h"
 
 #define top_value 		(0x7FFFFFFF)
 #define first_qtr		(0x20000000)
@@ -48,9 +45,7 @@ unsigned adaptive_arithmetic_encode(unsigned* data, int size, unsigned char* out
 	code step;
 	scale = 0;
 
-#if ENABLE_DEBUG
-	printf("aac: starting, %d\n", size);
-#endif
+	DEBUG("aac: starting, %d\n", size);
 
 	bitstream_state_t stream;
 	bitstream_init(&stream, output, output_buffer_size);
@@ -64,9 +59,9 @@ unsigned adaptive_arithmetic_encode(unsigned* data, int size, unsigned char* out
 		low = low + (step * bounds[data[i]]);
 #if ENABLE_DEBUG
 		if(high == low){
-			printf("arithmetic_encode: low equals high - insufficient precision: high: %lx, low: %lx\n", high, low);
+			DEBUG("arithmetic_encode: low equals high - insufficient precision: high: %lx, low: %lx\n", high, low);
 		}else if(low > high){
-			printf("arithmetic_encode: low greater than high - insufficient precision: high: %lx, low: %lx\n", high, low);
+			DEBUG("arithmetic_encode: low greater than high - insufficient precision: high: %lx, low: %lx\n", high, low);
 		}
 #endif
 		while((high < half) | (low >= half)) {
@@ -119,9 +114,9 @@ static inline int arithmetic_decode_symbol(code cum){
 				return i;
 			}
 		}
-#if ENABLE_DEBUG
-		printf("arithmetic_decode: error symbol while decoding\n");
-#endif
+
+		DEBUG("arithmetic_decode: error symbol while decoding\n");
+
 		return(999);
 	}
 }

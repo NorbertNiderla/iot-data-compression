@@ -3,10 +3,11 @@
 //ALDC by Kolo, 2012
 
 #include <stdlib.h>
-#include <stdio.h>
 
 #include "bitstream.h"
 
+#define ENABLE_DEBUG	(0)
+#include "debug.h"
 
 #define TYPE_3_CODE         (0)
 #define TYPE_2_CODE         (1)
@@ -70,7 +71,7 @@ int aldc_encode(int *d, int size, unsigned char *output, int output_size, int dc
 
 
 	if(size != LOGS_ARRAY_LEN){
-		printf("aldc_encode: size is not equal to logs array\n");
+		DEBUG("aldc_encode: size is not equal to logs array\n");
 	}
 	int F = 0;
 
@@ -149,7 +150,7 @@ int aldc_encode(int *d, int size, unsigned char *output, int output_size) {
 
 
 	if(size != LOGS_ARRAY_LEN){
-		printf("aldc_encode: size is not equal to logs array\n");
+		DEBUG("aldc_encode: size is not equal to logs array\n");
 	}
 	int F = 0;
 
@@ -520,7 +521,7 @@ void aldc_decode(unsigned char *input, int input_size, int *output, int size) {
 				output[i++] = val_decode_C(&stream);
 			break;
 		default:
-			printf("aldc_decode: invalid table code");
+			DEBUG("aldc_decode: invalid table code");
 			break;
 		}
 		break;
@@ -536,12 +537,12 @@ void aldc_decode(unsigned char *input, int input_size, int *output, int size) {
 				output[i++] = val_decode_B(&stream);
 			break;
 		default:
-			printf("aldc_decode: invalid table code");
+			DEBUG("aldc_decode: invalid table code");
 			break;
 		}
 		break;
 	default:
-		printf("aldc_decode: invalid type code");
+		DEBUG("aldc_decode: invalid type code");
 		break;
 	}
 

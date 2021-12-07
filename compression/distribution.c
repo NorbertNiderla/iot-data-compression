@@ -1,6 +1,5 @@
 //by Norbert Niderla, 2021
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <stdint.h>
@@ -9,6 +8,7 @@
 
 #define SYMBOLS (256)
 #define ENABLE_DEBUG (0)
+#include "debug.h"
 
 uint8_t setFrequencies(uint8_t *input, int size, uint16_t *freqs) {
 	int cnt = 0;
@@ -56,7 +56,7 @@ void setOccurrences(int *input, int size, int L, uint16_t *occ) {
 	else
 		occ[0] = (int) round(dens * (float) L);
 #if ENABLE_DEBUG
-	printf("%d\n",(int)(dens*100));
+	DEBUG("%d\n",(int)(dens*100));
 #endif
 
 	for (int i = 1; i < SYMBOLS; i++)
@@ -90,7 +90,7 @@ void setOccurrences_char(unsigned char*input, int size, int L, uint16_t *occ) {
 	else
 		occ[0] = (int) round(dens * (float) L);
 #if ENABLE_DEBUG
-	printf("%d\n",(int)(dens*100));
+	DEBUG("%d\n",(int)(dens*100));
 #endif
 
 	for (int i = 1; i < SYMBOLS; i++)

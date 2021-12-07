@@ -1,5 +1,6 @@
-#include <stdio.h>
+#define ENABLE_DEBUG
+#include "debug.h"
 
 int main(void){
-    printf("Heelo world\n");
+    DEBUG("Hello world\n");
 }

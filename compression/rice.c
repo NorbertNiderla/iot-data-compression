@@ -62,7 +62,7 @@ static int rice_parameter_estimate(int* n, int size, int offset){
 	r_val = 999;
 	int b_val = 999;
 
-	//printf("%d %d\n", R_min,R_max);//DEBUG
+	//DEBUG("%d %d\n", R_min,R_max);//DEBUG
 	for(int r = R_min; r <= R_max; r++){
 		s = 0;
 		for(int i = offset; i<DIM*size; i+=DIM){

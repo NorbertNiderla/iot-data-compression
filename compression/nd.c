@@ -7,10 +7,7 @@
 #include "bitstream.h"
 
 #define ENABLE_DEBUG    (0)
-#if ENABLE_DEBUG
-#include <stdio.h>
-#pragma message "nd: debug enabled"
-#endif
+#include "debug.h"
 
 #if ENCODER_DC_VALUE
 int nd_encode(int *data, int size, unsigned char *output,

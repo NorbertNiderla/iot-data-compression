@@ -11,10 +11,7 @@
 #endif
 
 #define ENABLE_DEBUG    (0)
-#if ENABLE_DEBUG
-#include <stdio.h>
-#pragma message "mindiff: debug enabled"
-#endif
+#include "debug.h"
 
 static inline int compute_binary_log2(int d) {
 	int n = 0;
@@ -75,10 +72,10 @@ int mindiff_encode(int *data, int size, unsigned char *output,
 		int output_buffer_size) {
 
 #if ENABLE_DEBUG
-	printf("DATA ENCODED: ");
+	DEBUG("DATA ENCODED: ");
 	for (int i = 0; i < size; i++)
-		printf("%d, ", data[i]);
-	printf("\n");
+		DEBUG("%d, ", data[i]);
+	DEBUG("\n");
 #endif
 
 	int u = data[0];
@@ -131,9 +128,9 @@ void mindiff_decode(unsigned char *input, int input_buffer_size, int *data,
 	}
 
 #if ENABLE_DEBUG
-	printf("DATA DECODED: ");
+	DEBUG("DATA DECODED: ");
 	for (int i = 0; i < size; i++)
-		printf("%d, ", data[i]);
-	printf("\n");
+		DEBUG("%d, ", data[i]);
+	DEBUG("\n");
 #endif
 }

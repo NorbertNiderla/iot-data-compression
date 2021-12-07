@@ -18,20 +18,17 @@
 //end
 
 #define ENABLE_DEBUG    (0)
-#if ENABLE_DEBUG
-#include <stdio.h>
-#pragma message "stoj: debug enabled"
-#endif
+#include "debug.h"
 
 #if ENCODER_DC_VALUE
 int stoj_encode(int *data, int size, unsigned char *output,
 		int output_buffer_size, int dc_value) {
 
 #if ENABLE_DEBUG
-	printf("DATA ENCODED: ");
+	DEBUG("DATA ENCODED: ");
 	for (int i = 0; i < size; i++)
-		printf("%d, ", data[i]);
-	printf("\n");
+		DEBUG("%d, ", data[i]);
+	DEBUG("\n");
 #endif
 
 	bitstream_state_t stream;
@@ -74,7 +71,7 @@ int stoj_encode(int *data, int size, unsigned char *output,
 				return (-1);
 		} else {
 #if ENABLE_DEBUG
-			printf("stoj_encode: invalid value in main coding tree.");
+			DEBUG("stoj_encode: invalid value in main coding tree.");
 #endif
 		}
 	}
@@ -87,10 +84,10 @@ int stoj_encode(int *data, int size, unsigned char *output,
 		int output_buffer_size) {
 
 #if ENABLE_DEBUG
-	printf("DATA ENCODED: ");
+	DEBUG("DATA ENCODED: ");
 	for (int i = 0; i < size; i++)
-		printf("%d, ", data[i]);
-	printf("\n");
+		DEBUG("%d, ", data[i]);
+	DEBUG("\n");
 #endif
 
 	bitstream_state_t stream;
@@ -132,7 +129,7 @@ int stoj_encode(int *data, int size, unsigned char *output,
 				return (-1);
 		} else {
 #if ENABLE_DEBUG
-			printf("stoj_encode: invalid value in main coding tree.");
+			DEBUG("stoj_encode: invalid value in main coding tree.");
 #endif
 		}
 	}
@@ -181,7 +178,7 @@ void stoj_decode(unsigned char *input, int input_buffer_size, int *data,
 			break;
 		default:
 #if ENABLE_DEBUG
-			printf("stoj_decode: invalid main switch statement input value.");
+			DEBUG("stoj_decode: invalid main switch statement input value.");
 #endif
 			break;
 		}
@@ -191,10 +188,10 @@ void stoj_decode(unsigned char *input, int input_buffer_size, int *data,
 			data[i] += data[i - 1];
 
 #if ENABLE_DEBUG
-	printf("DATA DECODED: ");
+	DEBUG("DATA DECODED: ");
 	for (int i = 0; i < size; i++)
-		printf("%d, ", data[i]);
-	printf("\n");
+		DEBUG("%d, ", data[i]);
+	DEBUG("\n");
 #endif
 }
 

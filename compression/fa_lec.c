@@ -10,10 +10,7 @@
 
 
 #define ENABLE_DEBUG    (0)
-#if ENABLE_DEBUG
-#include <stdio.h>
-#pragma message "fa_lec: debug enabled"
-#endif
+#include "debug.h"
 
 #define DICTIONARY_L    (15)
 
@@ -55,10 +52,10 @@ static void reset_group_freq(void){
 int fa_lec_encode(int* d, int size, unsigned char* output, int output_size, int dc_value){
 
 #if ENABLE_DEBUG
-	printf("DATA ENCODED: ");
+	DEBUG("DATA ENCODED: ");
 	for (int i = 0; i < size; i++)
-		printf("%d, ", d[i]);
-	printf("\n");
+		DEBUG("%d, ", d[i]);
+	DEBUG("\n");
 #endif
 
 	reset_rotary_ptr();
@@ -95,10 +92,10 @@ int fa_lec_encode(int* d, int size, unsigned char* output, int output_size, int 
 int fa_lec_encode(int* d, int size, unsigned char* output, int output_size){
 
 #if ENABLE_DEBUG
-	printf("DATA ENCODED: ");
+	DEBUG("DATA ENCODED: ");
 	for (int i = 0; i < size; i++)
-		printf("%d, ", d[i]);
-	printf("\n");
+		DEBUG("%d, ", d[i]);
+	DEBUG("\n");
 #endif
 
 	reset_rotary_ptr();
@@ -236,10 +233,10 @@ void fa_lec_decode(unsigned char *input, int input_size, int *d, int size) {
 
     for(int i = 1; i < size; i++) d[i] += d[i-1];
 #if ENABLE_DEBUG
-	printf("DATA DECODED: ");
+	DEBUG("DATA DECODED: ");
 	for (int i = 0; i < size; i++)
-		printf("%d, ", d[i]);
-	printf("\n");
+		DEBUG("%d, ", d[i]);
+	DEBUG("\n");
 #endif
 }
 
