@@ -1,7 +1,19 @@
-#pragma once
+/**
+ * by Norbert Niderla, 2021
+ * 
+ * Warsaw University of Technology
+ */
 
-int riceEncode(int* n, int size, int* output);
-void riceDecode(int* input, int size, int* n, unsigned long long r);
-int riceEncodeStream(int* n, int size, unsigned char* output, size_t output_buffer_size);
-void riceDecodeStream(unsigned char* input, int size, int* n);
-void printRiceHist(void);
+#ifndef COMPRESSION_IOT_RICE_H
+#define COMPRESSION_IOT_RICE_H
+
+#include "bitstream.h"
+
+#define R_ENCODE_BITS	(5)
+#define R_MAX			(31)
+#define RICE_BATCH		(10)
+
+void rice_encode(int* n, int size, bitstream_state_t* stream);
+unsigned rice_decode(unsigned char* input, int bytes, int* n);
+
+#endif

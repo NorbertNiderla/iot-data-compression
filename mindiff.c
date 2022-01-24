@@ -3,6 +3,7 @@
 //MINDIFF by Campobello, 2015
 
 #include "bitstream.h"
+#include "compression_iot_definitions.h"
 
 #define MINDIFF_MU_SHIFTED	(0)
 

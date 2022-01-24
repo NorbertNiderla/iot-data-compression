@@ -1,16 +1,9 @@
 #include <assert.h>
 #include <math.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "bitstream.h"
-
-#define DEBUG (0)
-#define RESET_WHEN_FULL (1)
-
-#if DEBUG
-	#include <stdio.h>
-#endif
-
 
 void bitstream_init(bitstream_state_t* state, unsigned char* stream, size_t stream_max_len) {
     state->processing_byte_buffer = 0x00;
@@ -41,8 +34,12 @@ void bitstream_reset(bitstream_state_t* state, unsigned char* stream, size_t str
  */
 int bitstream_append_bits(bitstream_state_t* state, unsigned long long value, unsigned n_bits_value) {
     unsigned int out = 0;
+    unsigned curr_n_bits = 0;
     while (n_bits_value > 0) {
-        unsigned short curr_n_bits = fmin(n_bits_value, 8 - state->bit_count_in_buffer);
+        if(n_bits_value < (8 - state->bit_count_in_buffer))
+            curr_n_bits = n_bits_value;
+        else
+            curr_n_bits = 8 - state->bit_count_in_buffer;    
         unsigned long long itValue = value;
         if (curr_n_bits != n_bits_value) {
             itValue = value >> (n_bits_value - curr_n_bits);
@@ -60,9 +57,7 @@ int bitstream_append_bits(bitstream_state_t* state, unsigned long long value, un
             state->stream_free_len--;
             out++;
             if(state->stream_free_len == 0){
-#if DEBUG
             	printf("Bitstream out of space!\n");
-#endif
                 return -1;
             }
             state->processing_byte_buffer = 0x00;
@@ -110,15 +105,8 @@ unsigned int bitstream_append(bitstream_state_t* state, unsigned long long value
 			state->bit_count_in_buffer = 0;
 			n_bytes++;
 			if(state->stream_free_len == 0){
-#if DEBUG
 				printf("Bitstream out of space\n");
-#endif
-#if RESET_WHEN_FULL
-				state->stream_ptr_last = state->stream_ptr_first;
-				state->stream_free_len = state->stream_used_len;
-				state->stream_used_len = 0;
-#endif
-				n_bytes++;
+                return -1;
 			}
 		}
 	}

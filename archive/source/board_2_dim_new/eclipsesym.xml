@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?><cdtprojectproperties>
+<!-- Automatically generated from make eclipsesym -->
+
+<!--
+Instrucions:
+
+In Eclipse:
+1. Open the project properties, menu Project->Properties
+2. Select C/C++ General->Paths and Symbols
+2a. (optional) Click Restore Defaults to delete any existing macros and include paths
+3. Click Import Settings...
+4. Select this file and press Finish
+5. Rebuild C/C++ index, menu Project->C/C++ Index->Rebuild
+
+-->
+
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
+<language name="GNU C">
+<includepath workspace_path="true">/RIOT/core/include</includepath>
+<includepath workspace_path="true">/RIOT/drivers/include</includepath>
+<includepath workspace_path="true">/RIOT/sys/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/slwstk6220a/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/common/silabs/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/common/silabs/drivers/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/families/ezr32wg/include/vendor</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/include/drivers</includepath>
+<includepath workspace_path="true">/RIOT/cpu/cortexm_common/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/cortexm_common/include/vendor</includepath>
+<includepath workspace_path="true">/RIOT/sys/libc/include</includepath>
+<includepath workspace_path="true">/RIOT/build/pkg/gecko_sdk/dist/emlib/inc</includepath>
+<includepath workspace_path="true">/RIOT/build/pkg/gecko_sdk/dist/emlib-extra/inc</includepath>
+</language>
+<language name="GNU C++">
+<includepath workspace_path="true">/RIOT/core/include</includepath>
+<includepath workspace_path="true">/RIOT/drivers/include</includepath>
+<includepath workspace_path="true">/RIOT/sys/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/slwstk6220a/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/common/silabs/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/common/silabs/drivers/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/families/ezr32wg/include/vendor</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/include/drivers</includepath>
+<includepath workspace_path="true">/RIOT/cpu/cortexm_common/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/cortexm_common/include/vendor</includepath>
+<includepath workspace_path="true">/RIOT/sys/libc/include</includepath>
+<includepath workspace_path="true">/RIOT/build/pkg/gecko_sdk/dist/emlib/inc</includepath>
+<includepath workspace_path="true">/RIOT/build/pkg/gecko_sdk/dist/emlib-extra/inc</includepath>
+</language>
+<language name="Assembly">
+<includepath workspace_path="true">/RIOT/core/include</includepath>
+<includepath workspace_path="true">/RIOT/drivers/include</includepath>
+<includepath workspace_path="true">/RIOT/sys/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/slwstk6220a/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/common/silabs/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/common/silabs/drivers/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/families/ezr32wg/include/vendor</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/include/drivers</includepath>
+<includepath workspace_path="true">/RIOT/cpu/cortexm_common/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/cortexm_common/include/vendor</includepath>
+<includepath workspace_path="true">/RIOT/sys/libc/include</includepath>
+<includepath workspace_path="true">/RIOT/build/pkg/gecko_sdk/dist/emlib/inc</includepath>
+<includepath workspace_path="true">/RIOT/build/pkg/gecko_sdk/dist/emlib-extra/inc</includepath>
+</language>
+<language name="C Source File">
+<includepath workspace_path="true">/RIOT/core/include</includepath>
+<includepath workspace_path="true">/RIOT/drivers/include</includepath>
+<includepath workspace_path="true">/RIOT/sys/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/slwstk6220a/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/common/silabs/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/common/silabs/drivers/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/families/ezr32wg/include/vendor</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/include/drivers</includepath>
+<includepath workspace_path="true">/RIOT/cpu/cortexm_common/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/cortexm_common/include/vendor</includepath>
+<includepath workspace_path="true">/RIOT/sys/libc/include</includepath>
+<includepath workspace_path="true">/RIOT/build/pkg/gecko_sdk/dist/emlib/inc</includepath>
+<includepath workspace_path="true">/RIOT/build/pkg/gecko_sdk/dist/emlib-extra/inc</includepath>
+</language>
+<language name="C++ Source File">
+<includepath workspace_path="true">/RIOT/core/include</includepath>
+<includepath workspace_path="true">/RIOT/drivers/include</includepath>
+<includepath workspace_path="true">/RIOT/sys/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/slwstk6220a/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/common/silabs/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/common/silabs/drivers/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/families/ezr32wg/include/vendor</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/include/drivers</includepath>
+<includepath workspace_path="true">/RIOT/cpu/cortexm_common/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/cortexm_common/include/vendor</includepath>
+<includepath workspace_path="true">/RIOT/sys/libc/include</includepath>
+<includepath workspace_path="true">/RIOT/build/pkg/gecko_sdk/dist/emlib/inc</includepath>
+<includepath workspace_path="true">/RIOT/build/pkg/gecko_sdk/dist/emlib-extra/inc</includepath>
+</language>
+<language name="Assembly Source File">
+<includepath workspace_path="true">/RIOT/core/include</includepath>
+<includepath workspace_path="true">/RIOT/drivers/include</includepath>
+<includepath workspace_path="true">/RIOT/sys/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/slwstk6220a/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/common/silabs/include</includepath>
+<includepath workspace_path="true">/RIOT/boards/common/silabs/drivers/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/families/ezr32wg/include/vendor</includepath>
+<includepath workspace_path="true">/RIOT/cpu/efm32/include/drivers</includepath>
+<includepath workspace_path="true">/RIOT/cpu/cortexm_common/include</includepath>
+<includepath workspace_path="true">/RIOT/cpu/cortexm_common/include/vendor</includepath>
+<includepath workspace_path="true">/RIOT/sys/libc/include</includepath>
+<includepath workspace_path="true">/RIOT/build/pkg/gecko_sdk/dist/emlib/inc</includepath>
+<includepath workspace_path="true">/RIOT/build/pkg/gecko_sdk/dist/emlib-extra/inc</includepath>
+</language>
+</section>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
+<language name="GNU C">
+<macro><name>DEVELHELP</name><value>1</value></macro>
+<macro><name>EFM32_LEUART_ENABLED</name><value>1</value></macro>
+<macro><name>EZR32WG330F256R60</name><value>1</value></macro>
+<macro><name>CPU_MODEL_EZR32WG330F256R60</name><value>1</value></macro>
+<macro><name>CPU_CORE_CORTEX_M4F</name><value>1</value></macro>
+<macro><name>RIOT_APPLICATION</name><value>"system"</value></macro>
+<macro><name>BOARD_SLWSTK6220A</name><value>"slwstk6220a"</value></macro>
+<macro><name>RIOT_BOARD</name><value>BOARD_SLWSTK6220A</value></macro>
+<macro><name>CPU_EFM32</name><value>"efm32"</value></macro>
+<macro><name>RIOT_CPU</name><value>CPU_EFM32</value></macro>
+<macro><name>MCU_EFM32</name><value>"efm32"</value></macro>
+<macro><name>RIOT_MCU</name><value>MCU_EFM32</value></macro>
+<macro><name>RIOT_VERSION</name><value>"2021.01-devel-1541-g6daad"</value></macro>
+<macro><name>MODULE_AUTO_INIT</name><value>1</value></macro>
+<macro><name>MODULE_AUTO_INIT_XTIMER</name><value>1</value></macro>
+<macro><name>MODULE_BOARD</name><value>1</value></macro>
+<macro><name>MODULE_BOARDS_COMMON_SILABS</name><value>1</value></macro>
+<macro><name>MODULE_CORE</name><value>1</value></macro>
+<macro><name>MODULE_CORE_INIT</name><value>1</value></macro>
+<macro><name>MODULE_CORE_MSG</name><value>1</value></macro>
+<macro><name>MODULE_CORE_PANIC</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_COMMON</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_COMMON_PERIPH</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_FPU</name><value>1</value></macro>
+<macro><name>MODULE_CPU</name><value>1</value></macro>
+<macro><name>MODULE_CPU_EZR32WG</name><value>1</value></macro>
+<macro><name>MODULE_DIV</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK_EMLIB</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK_EMLIB_EXTRA</name><value>1</value></macro>
+<macro><name>MODULE_MPU_STACK_GUARD</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB_NANO</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB_SYSCALLS_DEFAULT</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_COMMON</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_GPIO</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_GPIO</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_PM</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_TIMER</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_PM</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_TIMER</name><value>1</value></macro>
+<macro><name>MODULE_PM_LAYERED</name><value>1</value></macro>
+<macro><name>MODULE_SILABS_AEM</name><value>1</value></macro>
+<macro><name>MODULE_SILABS_BC</name><value>1</value></macro>
+<macro><name>MODULE_STDIO_RTT</name><value>1</value></macro>
+<macro><name>MODULE_SYS</name><value>1</value></macro>
+<macro><name>MODULE_XTIMER</name><value>1</value></macro>
+</language>
+<language name="GNU C++">
+<macro><name>DEVELHELP</name><value>1</value></macro>
+<macro><name>EFM32_LEUART_ENABLED</name><value>1</value></macro>
+<macro><name>EZR32WG330F256R60</name><value>1</value></macro>
+<macro><name>CPU_MODEL_EZR32WG330F256R60</name><value>1</value></macro>
+<macro><name>CPU_CORE_CORTEX_M4F</name><value>1</value></macro>
+<macro><name>RIOT_APPLICATION</name><value>"system"</value></macro>
+<macro><name>BOARD_SLWSTK6220A</name><value>"slwstk6220a"</value></macro>
+<macro><name>RIOT_BOARD</name><value>BOARD_SLWSTK6220A</value></macro>
+<macro><name>CPU_EFM32</name><value>"efm32"</value></macro>
+<macro><name>RIOT_CPU</name><value>CPU_EFM32</value></macro>
+<macro><name>MCU_EFM32</name><value>"efm32"</value></macro>
+<macro><name>RIOT_MCU</name><value>MCU_EFM32</value></macro>
+<macro><name>RIOT_VERSION</name><value>"2021.01-devel-1541-g6daad"</value></macro>
+<macro><name>MODULE_AUTO_INIT</name><value>1</value></macro>
+<macro><name>MODULE_AUTO_INIT_XTIMER</name><value>1</value></macro>
+<macro><name>MODULE_BOARD</name><value>1</value></macro>
+<macro><name>MODULE_BOARDS_COMMON_SILABS</name><value>1</value></macro>
+<macro><name>MODULE_CORE</name><value>1</value></macro>
+<macro><name>MODULE_CORE_INIT</name><value>1</value></macro>
+<macro><name>MODULE_CORE_MSG</name><value>1</value></macro>
+<macro><name>MODULE_CORE_PANIC</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_COMMON</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_COMMON_PERIPH</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_FPU</name><value>1</value></macro>
+<macro><name>MODULE_CPU</name><value>1</value></macro>
+<macro><name>MODULE_CPU_EZR32WG</name><value>1</value></macro>
+<macro><name>MODULE_DIV</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK_EMLIB</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK_EMLIB_EXTRA</name><value>1</value></macro>
+<macro><name>MODULE_MPU_STACK_GUARD</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB_NANO</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB_SYSCALLS_DEFAULT</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_COMMON</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_GPIO</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_GPIO</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_PM</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_TIMER</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_PM</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_TIMER</name><value>1</value></macro>
+<macro><name>MODULE_PM_LAYERED</name><value>1</value></macro>
+<macro><name>MODULE_SILABS_AEM</name><value>1</value></macro>
+<macro><name>MODULE_SILABS_BC</name><value>1</value></macro>
+<macro><name>MODULE_STDIO_RTT</name><value>1</value></macro>
+<macro><name>MODULE_SYS</name><value>1</value></macro>
+<macro><name>MODULE_XTIMER</name><value>1</value></macro>
+</language>
+<language name="Assembly">
+<macro><name>DEVELHELP</name><value>1</value></macro>
+<macro><name>EFM32_LEUART_ENABLED</name><value>1</value></macro>
+<macro><name>EZR32WG330F256R60</name><value>1</value></macro>
+<macro><name>CPU_MODEL_EZR32WG330F256R60</name><value>1</value></macro>
+<macro><name>CPU_CORE_CORTEX_M4F</name><value>1</value></macro>
+<macro><name>RIOT_APPLICATION</name><value>"system"</value></macro>
+<macro><name>BOARD_SLWSTK6220A</name><value>"slwstk6220a"</value></macro>
+<macro><name>RIOT_BOARD</name><value>BOARD_SLWSTK6220A</value></macro>
+<macro><name>CPU_EFM32</name><value>"efm32"</value></macro>
+<macro><name>RIOT_CPU</name><value>CPU_EFM32</value></macro>
+<macro><name>MCU_EFM32</name><value>"efm32"</value></macro>
+<macro><name>RIOT_MCU</name><value>MCU_EFM32</value></macro>
+<macro><name>RIOT_VERSION</name><value>"2021.01-devel-1541-g6daad"</value></macro>
+<macro><name>MODULE_AUTO_INIT</name><value>1</value></macro>
+<macro><name>MODULE_AUTO_INIT_XTIMER</name><value>1</value></macro>
+<macro><name>MODULE_BOARD</name><value>1</value></macro>
+<macro><name>MODULE_BOARDS_COMMON_SILABS</name><value>1</value></macro>
+<macro><name>MODULE_CORE</name><value>1</value></macro>
+<macro><name>MODULE_CORE_INIT</name><value>1</value></macro>
+<macro><name>MODULE_CORE_MSG</name><value>1</value></macro>
+<macro><name>MODULE_CORE_PANIC</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_COMMON</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_COMMON_PERIPH</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_FPU</name><value>1</value></macro>
+<macro><name>MODULE_CPU</name><value>1</value></macro>
+<macro><name>MODULE_CPU_EZR32WG</name><value>1</value></macro>
+<macro><name>MODULE_DIV</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK_EMLIB</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK_EMLIB_EXTRA</name><value>1</value></macro>
+<macro><name>MODULE_MPU_STACK_GUARD</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB_NANO</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB_SYSCALLS_DEFAULT</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_COMMON</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_GPIO</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_GPIO</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_PM</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_TIMER</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_PM</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_TIMER</name><value>1</value></macro>
+<macro><name>MODULE_PM_LAYERED</name><value>1</value></macro>
+<macro><name>MODULE_SILABS_AEM</name><value>1</value></macro>
+<macro><name>MODULE_SILABS_BC</name><value>1</value></macro>
+<macro><name>MODULE_STDIO_RTT</name><value>1</value></macro>
+<macro><name>MODULE_SYS</name><value>1</value></macro>
+<macro><name>MODULE_XTIMER</name><value>1</value></macro>
+</language>
+<language name="C Source File">
+<macro><name>DEVELHELP</name><value>1</value></macro>
+<macro><name>EFM32_LEUART_ENABLED</name><value>1</value></macro>
+<macro><name>EZR32WG330F256R60</name><value>1</value></macro>
+<macro><name>CPU_MODEL_EZR32WG330F256R60</name><value>1</value></macro>
+<macro><name>CPU_CORE_CORTEX_M4F</name><value>1</value></macro>
+<macro><name>RIOT_APPLICATION</name><value>"system"</value></macro>
+<macro><name>BOARD_SLWSTK6220A</name><value>"slwstk6220a"</value></macro>
+<macro><name>RIOT_BOARD</name><value>BOARD_SLWSTK6220A</value></macro>
+<macro><name>CPU_EFM32</name><value>"efm32"</value></macro>
+<macro><name>RIOT_CPU</name><value>CPU_EFM32</value></macro>
+<macro><name>MCU_EFM32</name><value>"efm32"</value></macro>
+<macro><name>RIOT_MCU</name><value>MCU_EFM32</value></macro>
+<macro><name>RIOT_VERSION</name><value>"2021.01-devel-1541-g6daad"</value></macro>
+<macro><name>MODULE_AUTO_INIT</name><value>1</value></macro>
+<macro><name>MODULE_AUTO_INIT_XTIMER</name><value>1</value></macro>
+<macro><name>MODULE_BOARD</name><value>1</value></macro>
+<macro><name>MODULE_BOARDS_COMMON_SILABS</name><value>1</value></macro>
+<macro><name>MODULE_CORE</name><value>1</value></macro>
+<macro><name>MODULE_CORE_INIT</name><value>1</value></macro>
+<macro><name>MODULE_CORE_MSG</name><value>1</value></macro>
+<macro><name>MODULE_CORE_PANIC</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_COMMON</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_COMMON_PERIPH</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_FPU</name><value>1</value></macro>
+<macro><name>MODULE_CPU</name><value>1</value></macro>
+<macro><name>MODULE_CPU_EZR32WG</name><value>1</value></macro>
+<macro><name>MODULE_DIV</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK_EMLIB</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK_EMLIB_EXTRA</name><value>1</value></macro>
+<macro><name>MODULE_MPU_STACK_GUARD</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB_NANO</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB_SYSCALLS_DEFAULT</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_COMMON</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_GPIO</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_GPIO</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_PM</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_TIMER</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_PM</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_TIMER</name><value>1</value></macro>
+<macro><name>MODULE_PM_LAYERED</name><value>1</value></macro>
+<macro><name>MODULE_SILABS_AEM</name><value>1</value></macro>
+<macro><name>MODULE_SILABS_BC</name><value>1</value></macro>
+<macro><name>MODULE_STDIO_RTT</name><value>1</value></macro>
+<macro><name>MODULE_SYS</name><value>1</value></macro>
+<macro><name>MODULE_XTIMER</name><value>1</value></macro>
+</language>
+<language name="C++ Source File">
+<macro><name>DEVELHELP</name><value>1</value></macro>
+<macro><name>EFM32_LEUART_ENABLED</name><value>1</value></macro>
+<macro><name>EZR32WG330F256R60</name><value>1</value></macro>
+<macro><name>CPU_MODEL_EZR32WG330F256R60</name><value>1</value></macro>
+<macro><name>CPU_CORE_CORTEX_M4F</name><value>1</value></macro>
+<macro><name>RIOT_APPLICATION</name><value>"system"</value></macro>
+<macro><name>BOARD_SLWSTK6220A</name><value>"slwstk6220a"</value></macro>
+<macro><name>RIOT_BOARD</name><value>BOARD_SLWSTK6220A</value></macro>
+<macro><name>CPU_EFM32</name><value>"efm32"</value></macro>
+<macro><name>RIOT_CPU</name><value>CPU_EFM32</value></macro>
+<macro><name>MCU_EFM32</name><value>"efm32"</value></macro>
+<macro><name>RIOT_MCU</name><value>MCU_EFM32</value></macro>
+<macro><name>RIOT_VERSION</name><value>"2021.01-devel-1541-g6daad"</value></macro>
+<macro><name>MODULE_AUTO_INIT</name><value>1</value></macro>
+<macro><name>MODULE_AUTO_INIT_XTIMER</name><value>1</value></macro>
+<macro><name>MODULE_BOARD</name><value>1</value></macro>
+<macro><name>MODULE_BOARDS_COMMON_SILABS</name><value>1</value></macro>
+<macro><name>MODULE_CORE</name><value>1</value></macro>
+<macro><name>MODULE_CORE_INIT</name><value>1</value></macro>
+<macro><name>MODULE_CORE_MSG</name><value>1</value></macro>
+<macro><name>MODULE_CORE_PANIC</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_COMMON</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_COMMON_PERIPH</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_FPU</name><value>1</value></macro>
+<macro><name>MODULE_CPU</name><value>1</value></macro>
+<macro><name>MODULE_CPU_EZR32WG</name><value>1</value></macro>
+<macro><name>MODULE_DIV</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK_EMLIB</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK_EMLIB_EXTRA</name><value>1</value></macro>
+<macro><name>MODULE_MPU_STACK_GUARD</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB_NANO</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB_SYSCALLS_DEFAULT</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_COMMON</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_GPIO</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_GPIO</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_PM</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_TIMER</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_PM</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_TIMER</name><value>1</value></macro>
+<macro><name>MODULE_PM_LAYERED</name><value>1</value></macro>
+<macro><name>MODULE_SILABS_AEM</name><value>1</value></macro>
+<macro><name>MODULE_SILABS_BC</name><value>1</value></macro>
+<macro><name>MODULE_STDIO_RTT</name><value>1</value></macro>
+<macro><name>MODULE_SYS</name><value>1</value></macro>
+<macro><name>MODULE_XTIMER</name><value>1</value></macro>
+</language>
+<language name="Assembly Source File">
+<macro><name>DEVELHELP</name><value>1</value></macro>
+<macro><name>EFM32_LEUART_ENABLED</name><value>1</value></macro>
+<macro><name>EZR32WG330F256R60</name><value>1</value></macro>
+<macro><name>CPU_MODEL_EZR32WG330F256R60</name><value>1</value></macro>
+<macro><name>CPU_CORE_CORTEX_M4F</name><value>1</value></macro>
+<macro><name>RIOT_APPLICATION</name><value>"system"</value></macro>
+<macro><name>BOARD_SLWSTK6220A</name><value>"slwstk6220a"</value></macro>
+<macro><name>RIOT_BOARD</name><value>BOARD_SLWSTK6220A</value></macro>
+<macro><name>CPU_EFM32</name><value>"efm32"</value></macro>
+<macro><name>RIOT_CPU</name><value>CPU_EFM32</value></macro>
+<macro><name>MCU_EFM32</name><value>"efm32"</value></macro>
+<macro><name>RIOT_MCU</name><value>MCU_EFM32</value></macro>
+<macro><name>RIOT_VERSION</name><value>"2021.01-devel-1541-g6daad"</value></macro>
+<macro><name>MODULE_AUTO_INIT</name><value>1</value></macro>
+<macro><name>MODULE_AUTO_INIT_XTIMER</name><value>1</value></macro>
+<macro><name>MODULE_BOARD</name><value>1</value></macro>
+<macro><name>MODULE_BOARDS_COMMON_SILABS</name><value>1</value></macro>
+<macro><name>MODULE_CORE</name><value>1</value></macro>
+<macro><name>MODULE_CORE_INIT</name><value>1</value></macro>
+<macro><name>MODULE_CORE_MSG</name><value>1</value></macro>
+<macro><name>MODULE_CORE_PANIC</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_COMMON</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_COMMON_PERIPH</name><value>1</value></macro>
+<macro><name>MODULE_CORTEXM_FPU</name><value>1</value></macro>
+<macro><name>MODULE_CPU</name><value>1</value></macro>
+<macro><name>MODULE_CPU_EZR32WG</name><value>1</value></macro>
+<macro><name>MODULE_DIV</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK_EMLIB</name><value>1</value></macro>
+<macro><name>MODULE_GECKO_SDK_EMLIB_EXTRA</name><value>1</value></macro>
+<macro><name>MODULE_MPU_STACK_GUARD</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB_NANO</name><value>1</value></macro>
+<macro><name>MODULE_NEWLIB_SYSCALLS_DEFAULT</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_COMMON</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_GPIO</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_GPIO</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_PM</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_INIT_TIMER</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_PM</name><value>1</value></macro>
+<macro><name>MODULE_PERIPH_TIMER</name><value>1</value></macro>
+<macro><name>MODULE_PM_LAYERED</name><value>1</value></macro>
+<macro><name>MODULE_SILABS_AEM</name><value>1</value></macro>
+<macro><name>MODULE_SILABS_BC</name><value>1</value></macro>
+<macro><name>MODULE_STDIO_RTT</name><value>1</value></macro>
+<macro><name>MODULE_SYS</name><value>1</value></macro>
+<macro><name>MODULE_XTIMER</name><value>1</value></macro>
+</language>
+</section>
+</cdtprojectproperties>
